@@ -3,7 +3,7 @@ import java.io.*;
 public class principal {
     public static void main(String[] args) {
         String filePath="datos.dat";
-        MiClase miObjeto = new MiClase("Miguel",19);
+        MiClase miObjeto = new MiClase("Miguel",19,1726744327);
         try (FileOutputStream fileOut=new FileOutputStream(filePath);
              ObjectOutputStream obOut=new ObjectOutputStream(fileOut);
         ) {
@@ -17,7 +17,7 @@ public class principal {
             ObjectInputStream objIn= new ObjectInputStream(fileIn);
         ){
             MiClase readObject=(MiClase) objIn.readObject();
-            System.out.println("El objeto en disco es: "+readObject);
+            System.out.println("El objeto en disco es: \n"+readObject);
         }catch(IOException e){
             throw new RuntimeException(e);
         }catch (ClassNotFoundException e){
