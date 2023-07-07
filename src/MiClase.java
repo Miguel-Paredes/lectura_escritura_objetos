@@ -6,6 +6,7 @@ public class MiClase implements Serializable {
     private int edad;
     private int cedula;
 
+
     public MiClase(String nombre, int edad, int cedula){
         this.nombre=nombre;
         this.edad=edad;
