@@ -14,10 +14,14 @@ public class principal {
         }
 
         try(FileInputStream fileIn=new FileInputStream(filePath);
-            ObjectInputStream obIn= new ObjectInputStream(fileIn);){
-            MiClase readObject= new MiClase();
+            ObjectInputStream objIn= new ObjectInputStream(fileIn);
+        ){
+            MiClase readObject=(MiClase) objIn.readObject();
+            System.out.println("El objeto en disco es: "+readObject);
         }catch(IOException e){
             throw new RuntimeException(e);
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException();
         }
 
 
