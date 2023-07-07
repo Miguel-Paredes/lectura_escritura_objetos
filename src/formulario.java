@@ -7,11 +7,12 @@ public class formulario {
     private JTextField IngreEdad;
     private JTextField IngreCed;
     private JPanel Panel;
-    private JButton okButton;
     private JLabel Nombre;
     private JLabel Cedula;
     private JLabel Edad;
-    private JLabel resultado;
+    private JButton guardar;
+    private JButton cargar;
+    private JLabel xd;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("formulario");
@@ -21,10 +22,10 @@ public class formulario {
         frame.setVisible(true);
     }
     public formulario() {
-        okButton.addActionListener(new ActionListener() {
+        cargar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                resultado.setText(IngreNombre.getText()+IngreCed.getText()+IngreEdad.getText());
+                xd.setText(IngreNombre.getText()+IngreCed.getText()+IngreEdad.getText());
             }
         });
     }
