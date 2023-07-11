@@ -15,9 +15,9 @@ public class formulario {
     private JButton cargar;
     private JLabel xd;
 
-    public String nomb="";
-    public String cedu;
-    public String eda;
+    public String nomb = "";
+    public int cedu;
+    public int eda;
 
     public String getNomb() {
         return nomb;
@@ -27,60 +27,82 @@ public class formulario {
         this.nomb = nomb;
     }
 
-    public String getCedu() {
+    public int getCedu() {
         return cedu;
     }
 
-    public void setCedu(String cedu) {
+    public void setCedu(int cedu) {
         this.cedu = cedu;
     }
 
-    public String getEda() {
+    public int getEda() {
         return eda;
     }
 
-    public void setEda(String eda) {
+    public void setEda(int eda) {
         this.eda = eda;
     }
 
-    public void main(String[] args) {
-        JFrame frame = new JFrame("formulario");
-        frame.setContentPane(new formulario().Panel);
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Formulario");
+        formulario formulario = new formulario();
+        frame.setContentPane(formulario.Panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        String filePath="datos.dat";
-        MiClase formulario = new MiClase(nomb,cedu,eda);
-        try (FileOutputStream fileOut=new FileOutputStream(filePath);
-             ObjectOutputStream obOut=new ObjectOutputStream(fileOut);
-        ) {
-            obOut.writeObject(formulario);
-            System.out.println("archivo escrito correctamente");
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
 
-        try(FileInputStream fileIn=new FileInputStream(filePath);
-            ObjectInputStream objIn= new ObjectInputStream(fileIn);
-        ){
-            MiClase readObject=(MiClase) objIn.readObject();
-            System.out.println("El objeto en disco es: \n"+readObject);
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException();
-        }
-    }
-    public formulario() {
-        guardar.addActionListener(new ActionListener() {
+        String filePath = "datos.dat";
+        MiClase datos = new MiClase(formulario.getNomb(), formulario.getCedu(), formulario.getEda());
+
+        formulario.guardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                xd.setText(IngreNombre.getText()+IngreCed.getText()+IngreEdad.getText());
-                nomb=IngreNombre.getText();
-                cedu=IngreCed.getText();
-                eda=IngreEdad.getText();
+                formulario.setNomb(formulario.IngreNombre.getText());
+                formulario.setCedu(Integer.parseInt(formulario.IngreCed.getText()));
+                formulario.setEda(Integer.parseInt(formulario.IngreEdad.getText()));
+
+                formulario.xd.setText(formulario.getNomb() + formulario.getCedu() + formulario.getEda());
+
+                try (FileOutputStream fileOut = new FileOutputStream(filePath);
+                     ObjectOutputStream obOut = new ObjectOutputStream(fileOut)) {
+                    obOut.writeObject(datos);
+                    System.out.println("Archivo escrito correctamente");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        formulario.cargar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try (FileInputStream fileIn = new FileInputStream(filePath);
+                     ObjectInputStream objIn = new ObjectInputStream(fileIn)) {
+                    MiClase readObject = (MiClase) objIn.readObject();
+                    formulario.setNomb(readObject.getNombre());
+                    formulario.setCedu(readObject.getCedula());
+                    formulario.setEda(readObject.getEdad());
+
+                    formulario.xd.setText(formulario.getNomb() + formulario.getCedu() + formulario.getEda());
+                    System.out.println("El objeto en disco es:\n" + readObject);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }
 
+    public formulario() {
+        guardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setNomb(IngreNombre.getText());
+                setCedu(Integer.parseInt(IngreCed.getText()));
+                setEda(Integer.parseInt(IngreEdad.getText()));
+                xd.setText(getNomb() + getCedu() + getEda());
+            }
+        });
+    }
 }
